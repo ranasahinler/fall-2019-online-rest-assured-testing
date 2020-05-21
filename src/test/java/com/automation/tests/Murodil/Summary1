@@ -1,0 +1,258 @@
+REST API classes.
+----------------
+
+Day 1.
+------
+
+Postman, SQL developer, Latest EC Machine
+
+API -> Application Programming Interface.
+
+API can be list of classes in your project, like for example:
+
+JDBC API ->
+Java Program > JDBC API > Database
+Java Program > Selenium API > Browsers
+Java Program > String API > Characters in Program
+
+Any Libraries that we use in our project to establish connection to anything/ or to make our interaction with certain set of resourses easier, we can call it an API.
+
+
+Java 8 | Data and Time API
+Java Program > DateTime API > Times, Dates, years, minutes ...
+=======================================================================
+
+REST API:
+ANY API that has communication happening through internet, is REST API.
+
+It runs on HTTP protocol.
+HTTP -> Hypertext transfer protocol - Internet
+
+--> Communication in REST API has 2 main parts.
+1) Request
+2) Response
+
+
+REST API helps establish comminication between:
+
+CLIENT API SERVER
+
+ApplicationA --> ApplicationB
+2 Different systems.
+
+REST API can be used to securely share data/resourses with external systems.
+
+Why are we learning REST API Testing/Automation?
+
+Development process:
+We gather requirements and understand them
+-Database Development(Tables, columns)
+-Build Code on top of it that will process the Application Business logic.
+Developers BUILD API on top of DATABASES. Even before UI.
+
+Benefit of API testing is that we can start testing process EARLY.
+And the more bugs we catch in API level testing, the less bugs we will see on UI.
+
+API level of application is developed before the UI part.
+
+-> start testing early
+-> find bugs early
+=====================
+
+A lot of demand in the market, some projects are only about REST api, there is no UI.
+----------------------------
+
+
+REST API popular usage:
+
+1) 2 Different applications/systems communicating with each other. and Sharing data/resouces
+
+2) In Same Application: Design is broken down to 3 parts.
+
+UI -> API -> Database
+
+================================
+
+3 SCENARIOS WHERE REST API IS USED:
+
+1) 2 independent systems are communicating and exchanging data
+Priceline --> Turkish Airlines API
+
+2) In same application Front End sends requests to its API
+UI --> API
+
+3) There is an application that has API and Anyone authorized can send requests to it.
+
+ANYONE --> API(PUBLIC)
+==========================================
+
+REST API
+
+Reprentational State Transfer
+
+2 Main types of APIs:
+
+1) SOAP
+- communication happens using XML only
+- request is sent to SOAP methods
+- Documentation is in WSDL (Wizdal)
+- Heavy, more secure, more stable
+- getting less popular
+2) REST API
+- communication happens using Json, XML
+- requests are sent to API methods/urls using
+- Communication happens in HTTP(Internet)
+- Lightweight, stable
+- easy to develop and automate
+- very popular
+=============================
+
+REST API
+1) REQUEST
+2) RESPONSE
+
+When we send request, we need to know the API methods/endpoints that are available:
+- read documentation about api methods
+- Swagger tool, that has API methods and descriptions
+
+simple endpoint:
+learn.cybertekschool.com/api/students
+
+Types of Requests:
+
+GET -> Read data
+POST -> Create/insert data
+PUT -> Update data
+DELETE-> Delete data
+
+I send GET, POST, PUT, DELETE type of API requests to API endpoint/method.
+=========================================
+
+ORDS API -> HR Database
+
+ORDS API has methods that we can send request to, and it send response with Data from HR database.
+
+ec2-54-198-62-58.compute-1.amazonaws.com:1000/ords/hr/regions
+
+ec2-54-198-62-58.compute-1.amazonaws.com:1000/ords/hr/countries
+===============================================================
+
+REST API:GET REQUEST
+REQUEST:
+* HTTP REQUEST TYPES:
+GET
+POST
+PUT
+DELETE
+* API ENPOINT / URL / METHOD
+* HEADERS(CREDENTIALS, CONTENT TYPE..)
+
+RESPONSE:
+* STATUS CODE (200, 301, 404 , 500)
+* RESPONSE BODY (JSON, XML, TEXT, HTML ETC)
+* HEADERS
+--------
+
+When manually testing REST API
+REST API | RESTFUL API | REST SERVICE
+
+We can use different tools like POSTMAN, ANY Browser, SoapUI, etc
+
+We will use POSTMAN for manual API testing.
+
+POSTMAN --> GET REQUEST TO ORDS API
+
+ORDS -> ORACLE DATA SERVICES
+It is an API on top of HR database.
+
+====================================
+
+When reading API documentation, we need to pay attention:
+
+- API request url, parameters, method body , headers, etc
+- API Request type(HTTP METHODS (GET, POST, PUT , DELETE}))
+==========================================================\
+
+When user sends GET request to ec2-54-198-62-58.compute-1.amazonaws.com:1000/ords/hr/countries
+Then Response status code should be 200
+And Response Body should be in JSON format
+And Response Body should contain all countries data
+
+----------------------------------------------
+
+If we look at how APIs are built, When sending API request, we are simply calling a java method via HTTP(Internet) and whatever that method is returning will be our API response.
+
+@GetMapping("/student/all")
+public ResponseBodyStudent retrieveAllUsers(){
+responseBodyStudent.setStudents(userRepository.findAll());
+return responseBodyStudent;
+}
+
+@GetMapping -> it means we can send GET request
+
+("/student/all") -> it means this the the ENPOINT/URL
+-------------------
+@DeleteMapping("/student/delete/{id}")
+public Optional<Student> deleteSingleStudent(@PathVariable int id){
+Optional<Student> s = userRepository.findById(id);
+ArrayList<Integer> listId = new ArrayList<>();
+ArrayList<Integer> list = new ArrayList<>();
+if(!s.isPresent()){
+throw new UserNotfoundException("id: "+id);
+}
+return s;
+}
+
+@DeleteMapping -> DELETE request
+"/student/delete/{id}" -> URL is /student/delete/120
+=================================
+
+@PostMapping("/student/create")
+public Student createUser (@Valid @RequestBody Student student){
+Optional<Student> student1 = userRepository.findById(student.getId());
+
+if(student1.isPresent()){
+throw new UserReqiuredTagException("Student already exist with same id, if you want store user remove id from request!");
+}
+if((student.getFirstName()== null || student.getFirstName().isEmpty())){
+throw new UserReqiuredTagException("First Name is required! Please add first name tag.");
+}
+if((student.getLastName()== null)||student.getLastName().isEmpty()){
+throw new UserReqiuredTagException("Last Name is required! Please add last name tag.");
+}
+if((student.getBatch() == 0) || (student.getBatch() < 7)){
+throw new UserReqiuredTagException("Batch Number is required! Please add batch number tag. Also, minimum Chicago batch number starts from 7!");
+}
+
+if(student.getContact().getContactId() != 0 ){
+throw new UserReqiuredTagException("Please remove contact id from request!");
+}
+
+if(student.getCompany().getAddress().getAddressId()!=0){
+throw new UserReqiuredTagException("Please remove address id from request!");
+}
+if(student.getCompany().getCompanyId()!=0 ){
+throw new UserReqiuredTagException("Please remove company id from request!");
+}
+Student savedUser =this.store(student);
+return savedUser;
+}
+=================================
+
+REQUEST
+
+RESPONSE
+----------
+=================================
+
+Scenario with api.cybertektraining.com
+
+Given User creates a new Student on UI with following data
+....
+
+When User sends GET request to api.cybertektraining.com/student/{id}
+
+Then Status code is 200
+And Response body should match UI data
+===============================
+

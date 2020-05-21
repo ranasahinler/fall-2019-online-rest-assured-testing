@@ -1,0 +1,242 @@
+RESTFUL API testing.
+
+How do you test restful APIs?
+
+Firstly, I learn API's available endpoints and how they work,
+Then I send GET, POST, PUT, DELETE type of requests to those endpoints,
+Then I verify API response if it is matching with expected behaviour.
+
+I do positive and negative tests.
+
+When I verify the API response, i check: status codes, headers, json body.
+----------------------------------
+
+Where do you keep API reference documentation in your Project?
+
+We use SWAGGER to keep API endpoints and descriptions. I normally go there and learn about API methods and how they work.
+
+------------------------------------
+
+Why do you think API testing is important?
+
+- API level in the application is developed before UI level, so API testing will enable to start QA process/Testing process earlier in the project
+
+- If APIs are working without bugs, UI functionality will also have less bugs
+=====================================
+
+APIs are platform independent:
+
+SystemA ---> SystemB API
+.Net(C#) <--- Java
+
+Nowadays, almost all applications, have their APIs that developers can use to:
+- programmatically invoke features of the applications
+(ex: zoom api to create a meeting)
+- integrate multiple applications, to exchange data use functionalities of the API
+
+-----------------------
+
+What are the types of Requests?
+
+GET -> Read data
+POST -> Create Data
+PUT -> To Update data
+DELETE -> Delete
+
+What are the parts of GET request?
+
+-> Base URL + API method <---- API Enpoint
+-> Parameters:
+-> PATH/URL params -> values is part of URL
+DOC: 54.164.195.86:1000/ords/hr/regions/{id}
+ex: 54.164.195.86:1000/ords/hr/regions/1
+-> QUERY params -> Key+Value
+Ex:
+www.etsy.com/api/products?prodid=34566&seller=Roman
+https://www.google.com/search?q=selenium
+
+-> Headers:
+- Accept-Type=Json | Accept-Type=xml
+- Authorization tokens, Credentials, Username passwords etc
+===============================================
+
+https://www.amazon.com/s?k=sport+shoes+for+women
+
+================================================
+
+Parts of RESPONSE to GET REQUEST?
+
+- status code
+- response body in JSON or XML, or any other format
+- headers (Content-type=application/json)
+
+STATUS CODES:
+httpstatuses.com
+
+Successful status codes start with 200
+200 -> OK
+201 -> Created after POST request
+
+Redirected messages start with 300
+301 Moved Permanently
+
+Client errors/ request errors start with 400
+400 Bad Request -> syntax error or wrong parameter
+401 Unauthorized -> not valid credentials
+403 Forbidden -> related to creadentials
+404 Not Found -> API method is wrong/value not found
+405 Method Not Allowed -> Send GET request to method that accepts only POST request type.
+
+Server Errors/ API side of errors start with 500
+
+500 Internal Server Error | Api encountered an error/exception while handling the request.
+The server encountered an unexpected condition that prevented it from fulfilling the request.
+
+503 Service Unavailable -> API could not handle the service at this time. It could be due to memory is full, too many requests at the same time etc.
+==========================
+
+PARTS of POST REQUEST?
+
+-> Base URL + API method <---- API Enpoint
+-> Request JSON BODY
+-> Headers:
+- Accept-Type=Application/Json | Accept-Type=Application/xml
+- Content-Type=Application/json
+- Authorization tokens, Credentials, Username passwords etc
+
+Accept-Type=Application/Json --> I want response to be in JSON format
+Content-Type=Application/json --> I am sending you data in JSON format
+
+-----------------------
+
+Parts of RESPONSE to POST REQUEST?
+
+- status code
+- response body in JSON or XML, or any other format
+- headers (Content-type=application/json)
+-----------------------
+
+
+
+ec2-54-164-195-86.compute-1.amazonaws.com
+54.164.195.86
+
+http://ec2-54-164-195-86.compute-1.amazonaws.com
+-> by default, it will goto port 80
+
+https://ec2-54-164-195-86.compute-1.amazonaws.com
+-> by default, it will goto port 443
+
+https://www.google.com --> 443
+172.217.7.228
+
+============================
+SPARTAN APP:
+AWS_URL:8000
+AWS_IP:8000
+
+ec2-54-164-195-86.compute-1.amazonaws.com:8000
+
+
+UI -> you can view/add/edit/delete a spartan on UI
+API -> you can view/add/edit/delete a spartan on UI
+Database -> H2 Database
+
+------------------
+
+View all spartans using API request.
+
+1) Goto Swagger to read documentation about API methods
+* Base URL: ec2-54-164-195-86.compute-1.amazonaws.com:8000
+* API method: /api/spartans/
+ec2-54-164-195-86.compute-1.amazonaws.com:8000/api/spartans/
+2) HTTP Method: GET - because we want to read all spartans data
+
+
+Request:
+status code: 200 OK
+headers:
+Content-Type →application/json;charset=UTF-8
+Transfer-Encoding →chunked
+Date →Sun, 08 Sep 2019 18:42:03 GMT
+JSON Body:
+All spartans
+================================
+
+Manual API testing: Postman
+Automated API testing: Java+RestAssured library
+
+Rest-Assured.io
+
+1) Goto mvnrepository.com
+search for restassured
+put into your maven project, pom.xml file:
+<dependency>
+<groupId>io.rest-assured</groupId>
+<artifactId>rest-assured</artifactId>
+<version>4.1.1</version>
+<scope>test</scope>
+</dependency>
+- right click and re-import just in case.
+
+2) Create a package under/ src/test/java
+restapitests
+
+3) Create a class:
+SpartanTests
+
+
+Ways to automate REST API using Java?
+
+- Rest-Assured
+- Apache client
+/ many more
+
+Why Rest-assured?
+- Easy to use BDD format
+- Powerful with many capabilities
+- Built in Hamcrest matcher library for assertions
+- Easy support for JsonPath, etc
+
+- it is a wrapper library that is built on top of Apache client library.
+
+- It has many ready static methods that we can call
+from RestAssured class
+How to send get REQUEST using RestAssured?
+
+RestAssured.get(url)
+
+It returns response Object
+
+Response r = RestAssured.get(url);
+===================================
+
+Task:
+- create a new class HRApiTests
+- create a @Test getAllRegionsTest
+- Send a get request to AllRegions API endpoint
+- print status code
+- print content type
+- pretty print response JSON
+- verify that status code is 200
+- verify that content type is "application/json"
+- verify that json response body contains "Americas"
+- verify that json response body contains "Europe"
+
+* try to use static imports for both restAssured and assertions
+* store response into Response type variable
+
+HTTP METHODs -> GET, POST, PUT, DELETE
+===============================================
+
+SUMMARY:
+- status codes
+- parts of GET/POST REQUEST and RESPONSE
+- headers, parameters(path params, query params)
+- intro to rest assured
+- spartan app api
+- RestAssured class
+- Response interface
+- automated basic get requests
+- verify status codes, headers(content type)
+- verify json body
